@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Cinemas - Combos & In-Seat Order</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter / Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0b0e; }
+    /* Hide scrollbar for clean horizontal scrolling */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="text-white min-h-screen pb-28 selection:bg-red-600">
+
+  <!-- TOP APP BAR -->
+  <header class="sticky top-0 z-40 bg-[#121217]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 flex items-center justify-between shadow-2xl">
+    <div class="flex items-center space-x-3">
+      <!-- Back Arrow -->
+      <button class="text-zinc-400 hover:text-white text-lg">←</button>
+      <!-- Logo + Hall Info -->
+      <div class="flex items-center space-x-2.5">
+        <img src="logo.png" alt="Event Cinemas" class="w-9 h-9 rounded-full bg-white object-cover border border-white/20" />
+        <div>
+          <h1 class="text-xs font-extrabold uppercase tracking-wider text-white">Event Cinemas</h1>
+          <p class="text-[10px] text-zinc-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+            Screen 1 • <span class="text-red-400 font-semibold">Seat F-12</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Button with Counter -->
+    <button onclick="openModal()" class="relative p-2 rounded-xl bg-zinc-900 border border-white/10 text-zinc-300">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+      </svg>
+      <span id="cartCountBadge" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#121217] hidden">0</span>
+    </button>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 pt-4 space-y-6">
+
+    <!-- SECTION TITLE: COMBOS FOR YOU -->
+    <div class="text-center pt-1">
+      <div class="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-zinc-400 uppercase">
+        <span class="text-red-500">✦</span> COMBOS FOR YOU <span class="text-red-500">✦</span>
+      </div>
+      <p class="text-[11px] text-zinc-500 mt-0.5">Save more with curated cinema combos</p>
+    </div>
+
+    <!-- COMBO CARD 1: SUPER COMBO (BEST VALUE) -->
+    <div class="relative bg-gradient-to-b from-[#181820] to-[#131318] border border-white/10 rounded-2xl p-4 shadow-xl hover:border-red-500/40 transition">
+      <!-- BADGE -->
+      <div class="absolute -top-2.5 left-4 bg-red-600 text-white font-extrabold text-[9px] uppercase tracking-wider px-2.5 py-0.5 rounded-md shadow-md">
+        BEST VALUE
+      </div>
+
+      <div class="flex items-center justify-between gap-3 mt-1">
+        <!-- Image Mockup -->
+        <div class="relative w-28 h-24 flex-shrink-0 flex items-center justify-center bg-zinc-900/60 rounded-xl border border-white/5 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1572177191856-3cde618dee1f?w=300&auto=format&fit=crop&q=60" alt="Super Combo" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition" />
+        </div>
+
+        <!-- Details -->
+        <div class="flex-1 space-y-1">
+          <h3 class="text-sm font-extrabold text-white uppercase tracking-tight">Super Combo</h3>
+          <ul class="text-[11px] text-zinc-400 space-y-0.5 leading-snug">
+            <li>• 1 Popcorn (Large)</li>
+            <li>• 2 Coke (Large)</li>
+            <li>• 1 Crispy Nachos</li>
+          </ul>
+          
+          <div class="flex items-center justify-between pt-2">
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-base font-extrabold text-white">Rs. 450</span>
+              <span class="text-xs text-zinc-500 line-through">Rs. 560</span>
+            </div>
+            <button onclick="addToCart('Super Combo', 450)" class="bg-red-600 hover:bg-red-500 active:scale-95 text-white font-bold text-xs px-4 py-1.5 rounded-lg shadow-lg shadow-red-600/30 transition">
+              ADD
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMBO CARD 2: COUPLE COMBO (POPULAR) -->
+    <div class="relative bg-gradient-to-b from-[#181820] to-[#131318] border border-white/10 rounded-2xl p-4 shadow-xl hover:border-amber-500/40 transition">
+      <!-- BADGE -->
+      <div class="absolute -top-2.5 left-4 bg-amber-500 text-black font-extrabold text-[9px] uppercase tracking-wider px-2.5 py-0.5 rounded-md shadow-md">
+        POPULAR
+      </div>
+
+      <div class="flex items-center justify-between gap-3 mt-1">
+        <!-- Image Mockup -->
+        <div class="relative w-28 h-24 flex-shrink-0 flex items-center justify-center bg-zinc-900/60 rounded-xl border border-white/5 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1585647347483-22b66260dfff?w=300&auto=format&fit=crop&q=60" alt="Couple Combo" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition" />
+        </div>
+
+        <!-- Details -->
+        <div class="flex-1 space-y-1">
+          <h3 class="text-sm font-extrabold text-white uppercase tracking-tight">Couple Combo</h3>
+          <ul class="text-[11px] text-zinc-400 space-y-0.5 leading-snug">
+            <li>• 1 Popcorn (Large)</li>
+            <li>• 2 Coke (Large)</li>
+          </ul>
+          
+          <div class="flex items-center justify-between pt-2">
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-base font-extrabold text-white">Rs. 320</span>
+              <span class="text-xs text-zinc-500 line-through">Rs. 390</span>
+            </div>
+            <button onclick="addToCart('Couple Combo', 320)" class="bg-red-600 hover:bg-red-500 active:scale-95 text-white font-bold text-xs px-4 py-1.5 rounded-lg shadow-lg shadow-red-600/30 transition">
+              ADD
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMBO CARD 3: SNACK COMBO (SAVE 20%) -->
+    <div class="relative bg-gradient-to-b from-[#181820] to-[#131318] border border-white/10 rounded-2xl p-4 shadow-xl hover:border-emerald-500/40 transition">
+      <!-- BADGE -->
+      <div class="absolute -top-2.5 left-4 bg-emerald-600 text-white font-extrabold text-[9px] uppercase tracking-wider px-2.5 py-0.5 rounded-md shadow-md">
+        SAVE 20%
+      </div>
+
+      <div class="flex items-center justify-between gap-3 mt-1">
+        <!-- Image Mockup -->
+        <div class="relative w-28 h-24 flex-shrink-0 flex items-center justify-center bg-zinc-900/60 rounded-xl border border-white/5 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1621996346565-e3d5d6281699?w=300&auto=format&fit=crop&q=60" alt="Snack Combo" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition" />
+        </div>
+
+        <!-- Details -->
+        <div class="flex-1 space-y-1">
+          <h3 class="text-sm font-extrabold text-white uppercase tracking-tight">Snack Combo</h3>
+          <ul class="text-[11px] text-zinc-400 space-y-0.5 leading-snug">
+            <li>• 1 Popcorn (Regular)</li>
+            <li>• 1 Coke (Regular)</li>
+            <li>• 1 Hot Dog / Roll</li>
+          </ul>
+          
+          <div class="flex items-center justify-between pt-2">
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-base font-extrabold text-white">Rs. 280</span>
+              <span class="text-xs text-zinc-500 line-through">Rs. 350</span>
+            </div>
+            <button onclick="addToCart('Snack Combo', 280)" class="bg-red-600 hover:bg-red-500 active:scale-95 text-white font-bold text-xs px-4 py-1.5 rounded-lg shadow-lg shadow-red-600/30 transition">
+              ADD
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPSELL / CROSS-SELL SECTION: YOU MAY ALSO LIKE -->
+    <div class="pt-4 space-y-3">
+      <div class="flex items-center justify-between">
+        <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-widest flex items-center gap-1.5">
+          <span class="text-red-500">★</span> YOU MAY ALSO LIKE
+        </h4>
+        <span class="text-[10px] text-zinc-500">Quick Adds</span>
+      </div>
+
+      <!-- 4-ITEM HORIZONTAL SCROLLER -->
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        
+        <!-- UPSELL 1 -->
+        <div class="bg-[#141419] border border-white/5 rounded-xl p-2.5 text-center flex flex-col justify-between hover:border-white/10 transition">
+          <div class="w-full h-16 rounded-lg overflow-hidden bg-zinc-900 mb-2">
+            <img src="https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=200&auto=format&fit=crop&q=60" alt="Nachos" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <h5 class="text-[11px] font-bold text-white truncate">Cheese Nachos</h5>
+            <p class="text-[11px] text-zinc-400 font-semibold mt-0.5">Rs. 180</p>
+          </div>
+          <button onclick="addToCart('Cheese Nachos', 180)" class="mt-2 w-full py-1 bg-red-600/20 hover:bg-red-600 border border-red-500/40 text-red-400 hover:text-white rounded-md text-[10px] font-extrabold uppercase transition">
+            + ADD
+          </button>
+        </div>
+
+        <!-- UPSELL 2 -->
+        <div class="bg-[#141419] border border-white/5 rounded-xl p-2.5 text-center flex flex-col justify-between hover:border-white/10 transition">
+          <div class="w-full h-16 rounded-lg overflow-hidden bg-zinc-900 mb-2">
+            <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&auto=format&fit=crop&q=60" alt="Cold Coffee" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <h5 class="text-[11px] font-bold text-white truncate">Cold Coffee</h5>
+            <p class="text-[11px] text-zinc-400 font-semibold mt-0.5">Rs. 120</p>
+          </div>
+          <button onclick="addToCart('Cold Coffee', 120)" class="mt-2 w-full py-1 bg-red-600/20 hover:bg-red-600 border border-red-500/40 text-red-400 hover:text-white rounded-md text-[10px] font-extrabold uppercase transition">
+            + ADD
+          </button>
+        </div>
+
+        <!-- UPSELL 3 -->
+        <div class="bg-[#141419] border border-white/5 rounded-xl p-2.5 text-center flex flex-col justify-between hover:border-white/10 transition">
+          <div class="w-full h-16 rounded-lg overflow-hidden bg-zinc-900 mb-2">
+            <img src="https://images.unsplash.com/photo-1576107232684-1279f3908594?w=200&auto=format&fit=crop&q=60" alt="Peri Peri Fries" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <h5 class="text-[11px] font-bold text-white truncate">Peri Peri Fries</h5>
+            <p class="text-[11px] text-zinc-400 font-semibold mt-0.5">Rs. 150</p>
+          </div>
+          <button onclick="addToCart('Peri Peri Fries', 150)" class="mt-2 w-full py-1 bg-red-600/20 hover:bg-red-600 border border-red-500/40 text-red-400 hover:text-white rounded-md text-[10px] font-extrabold uppercase transition">
+            + ADD
+          </button>
+        </div>
+
+        <!-- UPSELL 4 -->
+        <div class="bg-[#141419] border border-white/5 rounded-xl p-2.5 text-center flex flex-col justify-between hover:border-white/10 transition">
+          <div class="w-full h-16 rounded-lg overflow-hidden bg-zinc-900 mb-2">
+            <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=200&auto=format&fit=crop&q=60" alt="Brownie" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <h5 class="text-[11px] font-bold text-white truncate">Choco Brownie</h5>
+            <p class="text-[11px] text-zinc-400 font-semibold mt-0.5">Rs. 140</p>
+          </div>
+          <button onclick="addToCart('Choco Brownie', 140)" class="mt-2 w-full py-1 bg-red-600/20 hover:bg-red-600 border border-red-500/40 text-red-400 hover:text-white rounded-md text-[10px] font-extrabold uppercase transition">
+            + ADD
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CINEMA TRUST BADGES (FOOTER OF THE APP) -->
+    <div class="pt-6 border-t border-white/5 flex items-center justify-around text-[10px] text-zinc-400">
+      <div class="flex items-center gap-1"><span>🔒</span> 100% Secure</div>
+      <div class="flex items-center gap-1"><span>⏱️</span> 5-Min Seat Delivery</div>
+      <div class="flex items-center gap-1"><span>🍿</span> Freshly Made</div>
+    </div>
+
+  </main>
+
+  <!-- STICKY FLOATING CART BAR -->
+  <div id="cartBar" class="fixed bottom-0 left-0 right-0 p-3 bg-[#111115]/95 border-t border-white/10 backdrop-blur-xl hidden z-50">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div>
+        <p class="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold">Seat F-12 Tray</p>
+        <p id="cartSummary" class="text-sm font-extrabold text-white">0 Items • Rs. 0</p>
+      </div>
+      <button onclick="openModal()" class="bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs px-6 py-3 rounded-xl shadow-lg shadow-red-600/40 active:scale-95 transition flex items-center gap-2">
+        <span>Proceed</span>
+        <span>→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkoutModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-4">
+    <div class="bg-[#15151c] border border-white/10 rounded-2xl w-full max-w-sm p-5 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <h3 class="text-sm font-bold text-white uppercase tracking-tight">Order Confirmation</h3>
+          <p class="text-[11px] text-red-400 font-semibold">Event Cinemas • Seat F-12</p>
+        </div>
+        <button onclick="closeModal()" class="text-zinc-400 hover:text-white text-lg">✕</button>
+      </div>
+
+      <div id="orderItemsList" class="space-y-1.5 max-h-36 overflow-y-auto text-xs text-zinc-300 pr-1">
+        <!-- Dynamically injected items -->
+      </div>
+
+      <div class="border-t border-white/10 pt-2 flex justify-between items-center">
+        <span class="text-xs text-zinc-400">Total Payable:</span>
+        <span id="modalTotal" class="text-base font-extrabold text-white">Rs. 0</span>
+      </div>
+
+      <!-- Payment Method -->
+      <div class="space-y-2 pt-1">
+        <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Payment Method</p>
+        <label class="flex items-center justify-between p-2.5 border border-red-500/30 bg-red-600/5 rounded-xl cursor-pointer">
+          <div class="flex items-center gap-2">
+            <span class="text-sm">📱</span>
+            <span class="text-xs font-semibold text-white">Fonepay / Mobile Banking QR</span>
+          </div>
+          <input type="radio" name="payMethod" checked class="accent-red-600" />
+        </label>
+        <label class="flex items-center justify-between p-2.5 border border-white/5 bg-zinc-900 rounded-xl cursor-pointer">
+          <div class="flex items-center gap-2">
+            <span class="text-sm">💵</span>
+            <span class="text-xs font-semibold text-white">Pay Cash on Seat Delivery</span>
+          </div>
+          <input type="radio" name="payMethod" class="accent-red-600" />
+        </label>
+      </div>
+
+      <button onclick="placeOrder()" class="w-full py-3 bg-red-600 hover:bg-red-500 text-white text-xs font-extrabold uppercase rounded-xl shadow-lg shadow-red-600/30 transition">
+        Confirm & Send to Canteen
+      </button>
+    </div>
+  </div>
+
+  <!-- ORDER SUCCESS / CANTEEN NOTIFICATION OVERLAY -->
+  <div id="successOverlay" class="fixed inset-0 bg-[#0c0c10]/95 z-50 hidden flex flex-col items-center justify-center text-center p-6 space-y-4">
+    <div class="w-16 h-16 bg-red-600/10 border border-red-600/30 rounded-full flex items-center justify-center text-3xl animate-bounce">
+      🍿
+    </div>
+    <h2 class="text-lg font-black text-white uppercase tracking-tight">Order Sent to Canteen!</h2>
+    <p class="text-xs text-zinc-400 max-w-xs">Kitchen has received the ticket. Food is being prepped for <strong class="text-red-400">Seat F-12</strong>.</p>
+    
+    <div class="bg-zinc-900 border border-white/5 rounded-xl p-3 w-full max-w-xs text-left text-xs space-y-1">
+      <div class="flex justify-between text-zinc-400"><span>Screen:</span> <span class="text-white font-semibold">Hall 1</span></div>
+      <div class="flex justify-between text-zinc-400"><span>Seat:</span> <span class="text-red-400 font-bold">F-12</span></div>
+      <div class="flex justify-between text-zinc-400"><span>Delivery Window:</span> <span class="text-emerald-400 font-semibold">~4-6 mins</span></div>
+    </div>
+
+    <button onclick="resetApp()" class="px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-bold rounded-xl transition">
+      Close Demo
+    </button>
+  </div>
+
+  <!-- AUDIO CHIME FOR CANTEEN NOTIFICATION -->
+  <audio id="bellAudio" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      total += price;
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const cartBar = document.getElementById('cartBar');
+      const cartSummary = document.getElementById('cartSummary');
+      const cartCountBadge = document.getElementById('cartCountBadge');
+
+      if (cart.length > 0) {
+        cartBar.classList.remove('hidden');
+        cartCountBadge.classList.remove('hidden');
+        cartCountBadge.innerText = cart.length;
+        cartSummary.innerText = `${cart.length} Item${cart.length > 1 ? 's' : ''} • Rs. ${total}`;
+      } else {
+        cartBar.classList.add('hidden');
+        cartCountBadge.classList.add('hidden');
+      }
+    }
+
+    function openModal() {
+      if (cart.length === 0) return;
+      document.getElementById('modalTotal').innerText = `Rs. ${total}`;
+      const list = document.getElementById('orderItemsList');
+      list.innerHTML = cart.map(item => `
+        <div class="flex justify-between items-center py-0.5">
+          <span>• ${item.name}</span>
+          <span class="font-semibold text-white">Rs. ${item.price}</span>
+        </div>
+      `).join('');
+      document.getElementById('checkoutModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('checkoutModal').classList.add('hidden');
+    }
+
+    function placeOrder() {
+      closeModal();
+      const audio = document.getElementById('bellAudio');
+      audio.play().catch(() => {});
+      document.getElementById('successOverlay').classList.remove('hidden');
+    }
+
+    function resetApp() {
+      cart = [];
+      total = 0;
+      updateCartUI();
+      document.getElementById('successOverlay').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>

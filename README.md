@@ -4,14 +4,18 @@ Repository for Event Cinema - live and recorded entertainment in movie theaters 
 
 ## Event Cinemas Combos & In-Seat Order
 
-A demo page for cinema snack combos and in-seat ordering has been prepared.
+A demo page for cinema snack combos and in-seat ordering.
 
-The full `index.html` (Event Cinemas - Combos & In-Seat Order) is available. Due to size, it has been set up for you to download and commit, or view the attached version.
+**Features:**
+- Combo cards (Super Combo, Couple Combo, Snack Combo)
+- Upsell / quick-add items
+- Floating cart bar
+- Checkout modal with payment options
+- Order success / canteen notification simulation
+- Seat-specific delivery (e.g. Seat F-12)
 
-Features:
-- Combo cards (Super, Couple, Snack)
-- Upsell items
-- Cart and checkout modal
-- Seat delivery simulation
+Open `index.html` in a browser to try the demo.
 
-To use: Open `index.html` in a browser.
+---
+
+*Built with Tailwind CSS (CDN) and vanilla JavaScript.*
